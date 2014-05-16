@@ -1,26 +1,31 @@
-var HomeView = function(store) {
+var EmployeeView = function(employee) {
  
  	this.render = function() {
-    	this.el.html(HomeView.template());
+    	this.el.html(EmployeeView.template(employee));
     	return this;
 	};
-
-	this.findByName = function() {
-    	store.findByName($('.search-key').val(), function(employees) {
-        	$('.employee-list').html(HomeView.liTemplate(employees));
-    	});
+	
+	this.addLocation = function(event) {
+    	event.preventDefault();
+    	console.log('addLocation');
+    	navigator.geolocation.getCurrentPosition(
+        	function(position) {
+            	$('.location', this.el).html(position.coords.latitude + ',' + position.coords.longitude);
+        	},
+        	function() {
+            	alert('Error getting location');
+        	});
+    	return false;
 	};
-    
+
     this.initialize = function() {
-        // Define a div wrapper for the view. The div wrapper is used to attach events.
         this.el = $('<div/>');
-        this.el.on('keyup', '.search-key', this.findByName);
+        this.el.on('click', '.add-location-btn', this.addLocation);
     };
  
     this.initialize();
  
-}
-
-HomeView.template = Handlebars.compile($("#home-tpl").html());
-HomeView.liTemplate = Handlebars.compile($("#employee-li-tpl").html());
+ }
+ 
+EmployeeView.template = Handlebars.compile($("#employee-tpl").html());
 

@@ -51,6 +51,10 @@ var app = {
 	
 	registerEvents: function() {
     	var self = this;
+    	
+    	// Listen for URL hash tag changes
+    	$(window).on('hashchange', $.proxy(this.route, this));
+    	
     	// Check of browser supports touch events...
     	if (document.documentElement.hasOwnProperty('ontouchstart')) {
         	// ... if yes: register touch event listener to change the "selected" state of the item
@@ -71,6 +75,19 @@ var app = {
     	}
 	},
 	
+	route: function() {
+    	var hash = window.location.hash;
+    	if (!hash) {
+        	$('body').html(new HomeView(this.store).render().el);
+        	return;
+    	}
+    	var match = hash.match(app.detailsURL);
+    	if (match) {
+        	this.store.findById(Number(match[1]), function(employee) {
+            	$('body').html(new EmployeeView(employee).render().el);
+        	});
+    	}
+	},
 	
 
 //    initialize: function() {
@@ -91,10 +108,12 @@ var app = {
 	initialize: function() {
     	var self = this;
     	this.store = new MemoryStore(function() {
-       		$('body').html(new HomeView(self.store).render().el);
+//       		$('body').html(new HomeView(self.store).render().el);
+			self.route();			
     	});
     	
     	this.registerEvents();
+    	this.detailsURL = /^#employees\/(\d{1,})/;
 	}
 
 
