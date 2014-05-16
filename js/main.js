@@ -11,10 +11,10 @@ var app = {
 //    	$('.search-key').on('keyup', $.proxy(this.findByName, this));
 //	},
    
-   renderHomeView: function() {
-    	$('body').html(this.homeTpl());
-    	$('.search-key').on('keyup', $.proxy(this.findByName, this));
-	},
+//   renderHomeView: function() {
+//    	$('body').html(this.homeTpl());
+//    	$('.search-key').on('keyup', $.proxy(this.findByName, this));
+//	},
    
 //    findByName: function() {
 //        console.log('findByName');
@@ -29,12 +29,12 @@ var app = {
 //        });
 //    },
 
-	findByName: function() {
-    	var self = this;
-    	this.store.findByName($('.search-key').val(), function(employees) {
-        	$('.employee-list').html(self.employeeLiTpl(employees));
-    	});
-	},
+//	findByName: function() {
+//    	var self = this;
+//    	this.store.findByName($('.search-key').val(), function(employees) {
+//        	$('.employee-list').html(self.employeeLiTpl(employees));
+//    	});
+//	},
 
 	showAlert: function (message, title) {
     	if (navigator.notification) {
@@ -44,22 +44,27 @@ var app = {
     	}
 	},
 
-    initialize: function() {
-        this.homeTpl = Handlebars.compile($("#home-tpl").html());
-		this.employeeLiTpl = Handlebars.compile($("#employee-li-tpl").html());
-        var self = this;
-        this.store = new MemoryStore(function() {
-        	self.showAlert('Store Initialized', 'Info');
-        	self.renderHomeView();
-    	});
+//    initialize: function() {
+//        this.homeTpl = Handlebars.compile($("#home-tpl").html());
+//		this.employeeLiTpl = Handlebars.compile($("#employee-li-tpl").html());
+//        var self = this;
+//        this.store = new MemoryStore(function() {
+//        	self.showAlert('Store Initialized', 'Info');
+//        	self.renderHomeView();
+//    	});
     	
 //        this.store = new MemoryStore();
 //        this.store = new LocalStorageStore();
 //        this.store = new WebSqlStore();
 //        $('.search-key').on('keyup', $.proxy(this.findByName, this));
-    }
+//    }
 
-
+	initialize: function() {
+    	var self = this;
+    	this.store = new MemoryStore(function() {
+       		$('body').html(new HomeView(self.store).render().el);
+    });
+}
 
 
 };
