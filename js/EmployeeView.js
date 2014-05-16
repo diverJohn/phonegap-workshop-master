@@ -1,9 +1,6 @@
 var EmployeeView = function(employee) {
  
-     this.initialize = function() {
-        this.el = $('<div/>');
-        this.el.on('click', '.add-location-btn', this.addLocation);
-    };
+
  
  	this.render = function() {
     	this.el.html(EmployeeView.template(employee));
@@ -23,6 +20,14 @@ var EmployeeView = function(employee) {
     	return false;
 	};
 
+
+     this.initialize = function() {
+//        var that = this;
+        this.el = $('<div/>');
+        
+        this.el.on('click', '.add-location-btn', this.addLocation);
+//        this.el.on('click', '.add-location-btn', function(){that.addLocation(event);});
+    };
 
     this.initialize();
  
